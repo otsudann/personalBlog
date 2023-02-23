@@ -1,22 +1,21 @@
-from flask import Flask
+from flask import Flask, redirect, url_for
 
 app = Flask(__name__)
 
-@app.route("/")
-def hello_world():
-    return "<p>Hello World</p>"
+@app.route("/admin")
+def hello_admin():
+    return f"Hello Admin"
 
-@app.route("/hello/<name>")
-def hello_name(name):
-    return f"Hello {name}!"
+@app.route("/guest/<guest>")
+def hello_guest(guest):
+    return f"Hello {guest} as Guest!"
 
-@app.route("/blog/<int:postID>")
-def show_blog(postID):
-    return f"Blog number {postID}"
-
-@app.route("/rev/<float:revNO>")
-def revision(revNO):
-    return f"Revision number {revNO}"
+@app.route("/user/<name>")
+def hello_user(name):
+    if name == "admin":
+        return redirect(url_for("hello_admin"))
+    else:
+        return redirect(url_for("hello_guest", guest = name))
 
 if __name__ == "__main__":
     app.run()
